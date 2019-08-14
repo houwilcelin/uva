@@ -1,4 +1,3 @@
-//WRONG_ANSWER
 #include <bits/stdc++.h>
 #define NotN 2000 // Not a Number or inf
 #define MAXN 1002
@@ -65,6 +64,7 @@ int mod(int a, int b)
 int main()
 {
     //freopen("joy.in", "r", stdin);
+    //freopen("joy.out", "w", stdout);
     int TC, n, m, k;
     int *cylinder[MAXN], *max_idx[MAXN], *max_sum[MAXN];
     SegmenTree cTree = SegmenTree();
@@ -84,7 +84,7 @@ int main()
         }
         /*printf("_%d \n",  cTree[0].get(0));
         printf("-> %d\n", cTree[0].rmq(0, 5));*/
-        bool shouldGetMax = k >= ((m + 1) / 2);
+        bool shouldGetMax = k >= ((m + 1) / 2) + 1;
         //printf("df\n");
         //n = 1;
         cTree = SegmenTree(vi(max_sum[n - 1], max_sum[n - 1] + m));
@@ -98,6 +98,8 @@ int main()
             {
                 //int rleft = (j - k + 1) % m, rright = (j + k - 1) % m;
                 int rleft = mod(j - k + 1, m), rright = mod(j + k - 1, m);
+                /* if (i == 6 && j == 4)
+                    printf("__ %d %d\n", rleft, rright); */
                 if (shouldGetMax)
                     max_idx[i][j] = cTree.getMax();
                 else if (rleft <= rright)
@@ -105,7 +107,7 @@ int main()
                 else
                 {
                     int p1 = cTree.rmq(rleft, m - 1), p2 = cTree.rmq(0, rright);
-                    max_idx[i][j] = cTree.max_idx(p1, p2);
+                    max_idx[i][j] = cTree.max_idx(p2, p1);
                 }
                 //printf("(%d,%d)-> ")
                 max_sum[i][j] += max_sum[i + 1][max_idx[i][j]];
